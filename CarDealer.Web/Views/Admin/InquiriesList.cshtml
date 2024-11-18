@@ -1,0 +1,91 @@
+﻿@model IEnumerable<CarDealer.Core.Core.Models.Inquiry>
+
+@{
+    ViewData["Title"] = "Inquiries List";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Inquiries List</h2>
+
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Car</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var inquiry in Model)
+                {
+                    <tr>
+                        <td>@inquiry.Name</td>
+                        <td>@inquiry.Email</td>
+                        <td>@inquiry.Message</td>
+                        <td>@inquiry.Car?.Make @inquiry.Car?.Model</td>
+                        <td>@inquiry.CreatedAt.ToString("g")</td>
+                        <td>
+                            <a href="@Url.Action("ViewInquiriesDetails", "Admin", new { id = inquiry.Id })" class="btn btn-primary btn-sm">View Details</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No inquiries available.</td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <a href="@Url.Action("Dashboard", "Admin")" class="btn btn-primary mt-3">Go Back</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <nav aria-label="Inquiries Pagination">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == (int)ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("InquiriesList", new { page = i })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<style>
+    .table {
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .pagination .page-link {
+        color: #007bff;
+    }
+
+    .pagination .page-item:hover .page-link {
+        background-color: #e9ecef;
+    }
+</style>

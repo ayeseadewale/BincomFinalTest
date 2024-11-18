@@ -1,0 +1,95 @@
+﻿@model CarDealer.Core.Core.Models.Inquiry
+
+@{
+    ViewData["Title"] = "Submit Inquiry";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Submit an Inquiry</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <form asp-action="SubmitInquiry" method="post" class="bg-light p-4 rounded shadow-sm">
+        <input type="hidden" name="CarId" value="@Model.CarId" />
+
+        <div class="form-group mb-3">
+            <label for="Name" class="form-label">Your Name</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required placeholder="Enter your name" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Email" class="form-label">Your Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required placeholder="Enter your email" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Message" class="form-label">Your Message</label>
+            <textarea class="form-control" id="Message" name="Message" rows="4" required placeholder="Write your inquiry message">@Model.Message</textarea>
+        </div>
+
+        <div class="form-group mb-4">
+            <label>Car Details:</label>
+            @if (Model?.Car != null)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Car.Make @Model.Car.Model (@Model.Car.Year)</h5>
+                        <p><strong>Price:</strong> ₦@string.Format("{0:N2}", Model.Car.Price)</p>
+                        @if (!string.IsNullOrEmpty(Model.Car.ImageUrl))
+                        {
+                            <img src="@Model.Car.ImageUrl" alt="@Model.Car.Model" class="img-fluid rounded" style="max-height: 200px;" />
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">Car information is not available.</p>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100">Submit Inquiry</button>
+    </form>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .form-label {
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .form-control {
+        font-size: 14px;
+        border-radius: 8px;
+        padding: 12px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .btn-lg {
+        padding: 12px;
+    }
+
+    .container {
+        max-width: 800px;
+    }
+
+    .alert-success {
+        font-size: 16px;
+        font-weight: 600;
+    }
+</style>

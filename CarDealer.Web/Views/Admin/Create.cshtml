@@ -1,0 +1,97 @@
+﻿@model CarDealer.Core.Core.Models.Car
+
+@{
+    ViewData["Title"] = "Add New Car";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="card-title">Add New Car</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div class="form-group">
+                    <label asp-for="Make" class="font-weight-bold"></label>
+                    <input asp-for="Make" class="form-control" placeholder="Enter Car Make" />
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Model" class="font-weight-bold"></label>
+                    <input asp-for="Model" class="form-control" placeholder="Enter Car Model" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Year" class="font-weight-bold"></label>
+                    <input asp-for="Year" class="form-control" placeholder="Enter Year" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="font-weight-bold"></label>
+                    <input asp-for="Price" class="form-control" placeholder="Enter Price" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="font-weight-bold"></label>
+                    <textarea asp-for="Description" class="form-control" placeholder="Enter Car Description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageUrl" class="font-weight-bold"></label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="Enter Image URL" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-success btn-block mt-3">Create</button>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <a href="@Url.Action("CarList", "Admin")" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+    }
+
+    .card {
+        border-radius: 8px;
+    }
+
+    .card-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    }
+
+    .card-title {
+        margin: 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        padding: 10px;
+    }
+
+    .btn-success {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+    }
+
+    .btn-secondary {
+        border-radius: 6px;
+    }
+
+    .card-footer {
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+        padding: 10px;
+    }
+
+    .font-weight-bold {
+        font-weight: 600;
+    }
+</style>

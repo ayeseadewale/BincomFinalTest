@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Admin Login";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Admin Login</h2>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <form method="post" asp-action="CarList" class="mt-4">
+        <div class="form-group">
+            <label for="Username">Username</label>
+            <input type="text" class="form-control" id="Username" name="Username" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" id="Password" name="Password" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+    </form>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .container {
+        max-width: 400px;
+        padding: 20px;
+    }
+
+    .btn-block {
+        width: 100%;
+    }
+
+    .alert-danger {
+        margin-top: 20px;
+        font-size: 16px;
+    }
+</style>

@@ -1,0 +1,73 @@
+﻿@model CarDealer.Core.Core.Models.Car
+
+@{
+    ViewData["Title"] = "Confirm Deletion";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center text-danger">Confirm Deletion</h2>
+    <p class="text-center">Are you sure you want to delete the following car?</p>
+
+    <div class="card mb-4 p-4 shadow-sm">
+        <h3 class="card-title">@Model.Make @Model.Model (@Model.Year)</h3>
+        <p><strong>Price:</strong> ₦@Model.Price</p>
+        <p><strong>Description:</strong> @Model.Description</p>
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="@Model.Model" class="img-fluid rounded" style="max-height: 200px;" />
+        }
+    </div>
+
+    <form method="post" action="@Url.Action("DeleteConfirm", "Admin", new { id = Model.Id })" class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-danger btn-lg mx-2">Confirm Delete</button>
+        <a href="@Url.Action("CarList", "Admin")" class="btn btn-secondary btn-lg mx-2">Cancel</a>
+    </form>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .container {
+        max-width: 800px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .btn-lg {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .text-danger {
+        font-size: 22px;
+        font-weight: 600;
+    }
+</style>

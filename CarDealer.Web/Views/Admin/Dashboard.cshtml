@@ -1,0 +1,210 @@
+﻿@model CarDealer.Web.Models.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="@Url.Action("Index", "Admin")">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("CarList", "Admin")">
+                            <i class="fas fa-car"></i>
+                            Manage Cars
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("InquiriesList", "Admin")">
+                            <i class="fas fa-envelope"></i>
+                            Manage Inquiries
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Admin")">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <h2 class="my-4">Admin Dashboard</h2>
+
+            <!-- Dashboard Cards -->
+            <div class="row">
+                <!-- Total Cars -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm border-left-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Cars</h5>
+                            <h2 class="display-4">@Model.CarCount</h2>
+                            <p class="card-text">Total cars listed in your dealership.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Inquiries -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm border-left-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Inquiries</h5>
+                            <h2 class="display-4">@Model.InquiryCount</h2>
+                            <p class="card-text">Total inquiries submitted by customers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Inquiries Table -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    MOST RECENT 5 INQUIRIES
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Car</th>
+                                <th>Inquiry Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Inquiries != null && Model.Inquiries.Any())
+                            {
+                                int pageSize = 5;
+                                int pageIndex;
+                                int.TryParse(ViewContext.HttpContext.Request.Query["page"].FirstOrDefault(), out pageIndex);
+                                if (pageIndex <= 0)
+                                {
+                                    pageIndex = 1;
+                                }
+
+                                var paginatedInquiries = Model.Inquiries.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+                                foreach (var inquiry in paginatedInquiries)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (inquiry.Car != null)
+                                            {
+                                                @inquiry.Car.Make @inquiry.Car.Model
+                                            }
+                                            else
+                                            {
+                                                <span>No car information available</span>
+                                            }
+                                        </td>
+                                        <td>@inquiry.Message</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">No recent inquiries found.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination Links -->
+                    @if (Model.Inquiries != null && Model.Inquiries.Count() > Model.PageSize)
+                    {
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                @for (int i = 1; i <= (Model.TotalInquiries + Model.PageSize - 1) / Model.PageSize; i++)
+                                {
+                                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                        <a class="page-link" href="?page=@i">@i</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+
+                    }
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .sidebar {
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+    }
+
+        .sidebar .nav-link {
+            font-size: 16px;
+            color: #495057;
+            padding: 10px 15px;
+        }
+
+            .sidebar .nav-link.active {
+                background-color: #007bff;
+                color: #fff;
+            }
+
+            .sidebar .nav-link i {
+                margin-right: 8px;
+            }
+
+    .card {
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .display-4 {
+        font-size: 3rem;
+        color: #007bff;
+        font-weight: 700;
+    }
+
+    .card-body p {
+        color: #6c757d;
+    }
+
+    .table {
+        font-size: 14px;
+    }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+    .card-header {
+        background-color: #f1f1f1;
+        font-weight: bold;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .border-left-primary {
+        border-left: 5px solid #007bff;
+    }
+
+    .border-left-success {
+        border-left: 5px solid #28a745;
+    }
+</style>
+
+<!-- Font Awesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>

@@ -1,0 +1,92 @@
+﻿@model IEnumerable<CarDealer.Core.Core.Models.Car>
+
+@{
+    ViewData["Title"] = "Car List";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Car List</h2>
+    <a href="@Url.Action("Create", "Admin")" class="btn btn-success mt-3">Add New Car</a>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in Model)
+            {
+                <tr>
+                    <td>@car.Make</td>
+                    <td>@car.Model</td>
+                    <td>@car.Year</td>
+                    <td>₦@string.Format("{0:N2}", car.Price)</td>
+                    <td>@car.Description</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(car.ImageUrl))
+                        {
+                            <img src="@car.ImageUrl" alt="@car.Model" style="max-height: 100px; max-width: 150px;" />
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", "Admin", new { id = car.Id })" class="btn btn-primary btn-sm">View</a>
+                        <a href="@Url.Action("Edit", "Admin", new { id = car.Id })" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="@Url.Action("Delete", "Admin", new { id = car.Id })" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+
+                    <a href="@Url.Action("Dashboard", "Admin")" class="btn btn-primary mt-3">Go Back</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <nav aria-label="Car Pagination">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<style>
+    .table {
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .pagination .page-link {
+        color: #007bff;
+    }
+
+    .pagination .page-item:hover .page-link {
+        background-color: #e9ecef;
+    }
+</style>
